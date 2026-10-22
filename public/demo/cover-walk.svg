@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="秋日散步封面">
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b9275"/>
+      <stop offset="1" stop-color="#4f5a46"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.07"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="url(#field)"/>
+  <path d="M-20 356 C90 320 150 386 250 348 S420 306 708 360 V432 H-20 Z" fill="#3b4436"/>
+  <path d="M62 432 C120 360 224 352 268 300 S350 226 354 168 S396 96 458 80" fill="none" stroke="#e8dfcc" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+  <path d="M62 432 C120 360 224 352 268 300 S350 226 354 168 S396 96 458 80" fill="none" stroke="#9c5a3c" stroke-width="1.4" stroke-dasharray="3 11" stroke-linecap="round"/>
+  <g fill="#9c5a3c">
+    <circle cx="120" cy="150" r="7"/><circle cx="164" cy="122" r="4"/><circle cx="94" cy="196" r="4"/>
+    <circle cx="540" cy="180" r="5"/><circle cx="578" cy="210" r="3"/><circle cx="512" cy="238" r="3"/>
+  </g>
+  <g stroke="#e8dfcc" fill="none" opacity="0.5" stroke-width="1.2">
+    <path d="M0 92 H688 M0 118 H688"/>
+    <path d="M540 40 V260 M566 40 V260"/>
+  </g>
+  <text x="44" y="70" fill="#e8dfcc" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="4">WALK NO.7 / AUTUMN</text>
+  <text x="44" y="280" fill="#e8dfcc" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="72" font-weight="600" letter-spacing="10">散步</text>
+  <text x="48" y="316" fill="#d8cfb8" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="16" letter-spacing="4">没有目的，也是一种路线</text>
+  <rect width="688" height="432" filter="url(#grain)"/>
+</svg>

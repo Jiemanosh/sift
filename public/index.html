@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="description" content="筛 SIFT：只看你关注的 B站 与知乎博主的更新。">
+  <title>筛 SIFT · 只看你关注的人</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-texture" aria-hidden="true"></div>
+  <a class="skip-link" href="#feed">跳到信息流</a>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand">
+        <span class="seal" aria-hidden="true">筛</span>
+        <div class="brand-lockup">
+          <span class="brand-name">SIFT</span>
+          <span class="brand-sub">只看你关注的人</span>
+        </div>
+      </div>
+      <div class="masthead-meta">
+        <span id="today-label">正在载入日期</span>
+        <span class="meta-rule" aria-hidden="true"></span>
+        <span id="headline-stats">正在整理信息流…</span>
+      </div>
+      <div class="masthead-actions">
+        <button type="button" id="filter-toggle" class="btn btn-ghost filter-toggle" aria-expanded="false" aria-controls="rail">
+          筛选<span id="filter-count" class="filter-count" hidden>0</span>
+        </button>
+        <button type="button" id="sync-btn" class="btn btn-primary">
+          <span class="sync-glyph" aria-hidden="true"></span>
+          <span id="sync-btn-label">同步更新</span>
+        </button>
+        <button type="button" id="accounts-btn" class="btn btn-ghost">账号与来源</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="rail" id="rail" aria-label="账号与筛选">
+      <section class="rail-section rail-accounts">
+        <div class="section-head">
+          <h2>来源</h2>
+          <button type="button" class="text-btn" id="rail-manage-btn">管理</button>
+        </div>
+        <div id="account-summary" class="account-summary">
+          <div class="account-line is-loading"><span class="mini-skeleton"></span></div>
+        </div>
+      </section>
+
+      <section class="rail-section rail-filters" id="rail-filters">
+        <div class="section-head">
+          <h2>筛选项</h2>
+          <button type="button" class="text-btn" id="reset-filters" hidden>重置</button>
+        </div>
+
+        <div class="filter-group" id="range-picker">
+          <h3>更新范围</h3>
+          <div class="chips" id="range-chips" role="group" aria-label="按更新时间筛选">
+            <button type="button" class="chip" data-days="7">近一周</button>
+            <button type="button" class="chip" data-days="15">近十五天</button>
+            <button type="button" class="chip is-on" data-days="30">近一月</button>
+            <button type="button" class="chip" data-days="90">近三月</button>
+            <button type="button" class="chip" data-days="180">近半年</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>平台</h3>
+          <div class="chips" id="source-chips" role="group" aria-label="按平台筛选">
+            <button type="button" class="chip is-on" data-value="all">全部 <span class="chip-count" data-count="all">0</span></button>
+            <button type="button" class="chip" data-value="bilibili">B站 <span class="chip-count" data-count="bilibili">0</span></button>
+            <button type="button" class="chip" data-value="zhihu">知乎 <span class="chip-count" data-count="zhihu">0</span></button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>类型</h3>
+          <div class="chips" id="kind-chips" role="group" aria-label="按内容类型筛选">
+            <button type="button" class="chip is-on" data-value="all">全部</button>
+            <button type="button" class="chip" data-value="video">视频</button>
+            <button type="button" class="chip" data-value="article">文章</button>
+            <button type="button" class="chip" data-value="answer">回答</button>
+            <button type="button" class="chip" data-value="post">动态</button>
+          </div>
+        </div>
+
+        <div class="checks">
+          <label class="check">
+            <input type="checkbox" id="filter-unread">
+            <span>只看未读</span>
+            <span class="check-count" id="count-unread">0</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="filter-starred">
+            <span>只看收藏</span>
+            <span class="check-count" id="count-starred">0</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="rail-section creators-section">
+        <div class="section-head">
+          <h2>博主</h2>
+          <span class="section-note" id="creator-total"></span>
+        </div>
+        <div class="creator-chips" id="creator-chips" role="group" aria-label="按博主筛选"></div>
+      </section>
+
+      <p class="rail-foot">所有数据只保存在本机。<br>B站定时同步；知乎通过浏览器书签同步。</p>
+      <button type="button" id="rail-done" class="btn btn-primary rail-done">查看结果</button>
+    </aside>
+
+    <section class="feed-column" aria-label="关注更新">
+      <nav class="view-switch" id="view-switch" aria-label="切换浏览视图" hidden>
+        <button type="button" class="view-tab is-on" data-view="following" aria-pressed="true">关注更新</button>
+        <button type="button" class="view-tab" data-view="favorites" aria-pressed="false">B站收藏夹</button>
+        <button type="button" class="view-tab" data-view="watchlater" aria-pressed="false">稍后再看</button>
+      </nav>
+      <div class="feed-toolbar">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" id="search-input" placeholder="搜索标题、摘要、博主（按 /）" aria-label="搜索信息流" autocomplete="off">
+          <button type="button" id="search-clear" class="search-clear" aria-label="清空搜索" hidden>×</button>
+        </div>
+        <div class="toolbar-actions">
+          <span class="result-note" id="result-note">全部更新</span>
+          <button type="button" id="mark-all-btn" class="text-btn">全部标为已读</button>
+        </div>
+      </div>
+
+      <div class="library-bar" id="library-bar" hidden>
+        <span class="library-title" id="library-title" hidden>稍后再看</span>
+        <label class="folder-picker" id="folder-picker">
+          <span>收藏夹</span>
+          <select id="folder-select" aria-label="选择B站收藏夹"></select>
+        </label>
+        <span class="library-meta" id="library-meta"></span>
+        <button type="button" id="library-refresh" class="text-btn">刷新列表</button>
+      </div>
+
+      <div id="status-banner" class="status-banner" hidden>
+        <div class="banner-track" id="banner-track"><progress id="banner-progress" max="100" value="0" aria-label="同步进度"></progress></div>
+        <div class="banner-content">
+          <span class="banner-dot" aria-hidden="true"></span>
+          <span id="banner-text" class="banner-text"></span>
+          <button type="button" class="banner-dismiss" id="banner-dismiss" aria-label="收起提示">收起</button>
+        </div>
+      </div>
+
+      <div id="feed" class="feed">
+        <div class="feed-loading" aria-label="加载中">
+          <div class="skeleton-card"><span class="skeleton-line w-20"></span><span class="skeleton-line w-70"></span><span class="skeleton-line w-45"></span></div>
+          <div class="skeleton-card"><span class="skeleton-line w-15"></span><span class="skeleton-line w-60"></span><span class="skeleton-line w-40"></span></div>
+          <div class="skeleton-card"><span class="skeleton-line w-25"></span><span class="skeleton-line w-75"></span><span class="skeleton-line w-50"></span></div>
+        </div>
+      </div>
+      <div id="empty-state" class="empty-state" hidden></div>
+      <div id="feed-end" class="feed-end" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <span>筛 SIFT · 本机运行</span>
+    <span class="foot-dot" aria-hidden="true">·</span>
+    <span>不追踪、不上传，只读取你关注的人</span>
+  </footer>
+
+  <div class="modal-root" id="modal-root" hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <header class="modal-head">
+        <div>
+          <p class="modal-kicker" id="modal-kicker">账号</p>
+          <h2 id="modal-title">连接来源</h2>
+        </div>
+        <button type="button" class="modal-close" data-modal-close aria-label="关闭">×</button>
+      </header>
+      <div class="modal-body" id="modal-body"></div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <shortcut
+    android:shortcutId="settings"
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut"
+    android:shortcutShortLabel="@string/shortcut_settings"
+    android:shortcutLongLabel="@string/shortcut_settings">
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetPackage="com.qodercn.sift"
+      android:targetClass="com.qodercn.sift.SetupActivity" />
+  </shortcut>
+</shortcuts>

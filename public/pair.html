@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="referrer" content="no-referrer">
+  <title>连接筛 · 手机配对</title>
+  <style>
+    :root {
+      --paper: #f3eee3;
+      --paper-2: #fbf8f0;
+      --ink: #1d1b17;
+      --ink-soft: #464136;
+      --muted: #6f685a;
+      --line: #dad2c2;
+      --line-strong: #b9ae9a;
+      --accent: #bf3f2b;
+      --accent-deep: #9c2f1e;
+      --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", SimSun, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: max(22px, env(safe-area-inset-top)) 18px max(28px, env(safe-area-inset-bottom));
+      color: var(--ink);
+      background:
+        radial-gradient(700px 420px at 8% -8%, rgba(191, 63, 43, 0.08), transparent 62%),
+        var(--paper);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { width: min(100%, 520px); margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; }
+    .seal {
+      display: grid; place-items: center; width: 44px; height: 44px;
+      background: var(--accent); color: var(--paper-2);
+      font-family: var(--serif); font-size: 25px; line-height: 1;
+      box-shadow: 3px 3px 0 rgba(29, 27, 23, 0.12);
+    }
+    .brand strong {
+      display: block; font-family: var(--serif); font-size: 20px; letter-spacing: 0.14em;
+    }
+    .brand span { display: block; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+    .card {
+      padding: 22px 19px 24px;
+      border: 1px solid var(--line-strong);
+      background: rgba(251, 248, 240, 0.72);
+      box-shadow: 6px 7px 0 rgba(29, 27, 23, 0.055);
+    }
+    .kicker {
+      margin: 0 0 6px; color: var(--accent); font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.16em;
+    }
+    h1 { margin: 0 0 10px; font-family: var(--serif); font-size: 28px; line-height: 1.3; font-weight: 600; }
+    h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 17px; font-weight: 600; }
+    .lead { margin: 0 0 18px; color: var(--ink-soft); font-size: 13px; }
+    .primary, .secondary {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 48px; padding: 12px 16px;
+      border: 1px solid var(--accent); border-radius: 2px;
+      font: 600 15px/1.4 var(--sans); text-align: center; text-decoration: none;
+      cursor: pointer;
+    }
+    .primary { background: var(--accent); color: var(--paper-2); }
+    .primary:active { background: var(--accent-deep); }
+    .primary[disabled] { opacity: 0.45; cursor: not-allowed; }
+    .secondary { background: transparent; color: var(--accent); }
+    .status { min-height: 20px; margin: 10px 0 0; color: var(--muted); font-size: 11.5px; text-align: center; }
+    .status.is-error { color: var(--accent-deep); }
+    .divider { height: 1px; margin: 20px 0 18px; background: var(--line); }
+    .row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 0; border-bottom: 1px dashed var(--line);
+    }
+    .row > span { flex: 0 0 64px; color: var(--muted); font-size: 11px; }
+    .row code {
+      flex: 1; min-width: 0; overflow-wrap: anywhere;
+      font-family: var(--mono); font-size: 12px; color: var(--ink);
+    }
+    .row button {
+      flex: 0 0 auto; padding: 5px 9px; border: 1px solid var(--line-strong);
+      background: var(--paper); color: var(--ink-soft); font: 11px var(--sans); cursor: pointer;
+    }
+    .install { margin-top: 20px; }
+    .install p { margin: 0 0 10px; color: var(--muted); font-size: 11.5px; }
+    .install-note { margin: 0 0 6px; color: var(--muted); font-size: 11.5px; }
+    .fine { margin: 16px 0 0; color: var(--faint, #99907f); font-size: 10.5px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="brand">
+      <span class="seal" aria-hidden="true">筛</span>
+      <div>
+        <strong>SIFT</strong>
+        <span>只看你关注的人</span>
+      </div>
+    </header>
+
+    <main class="card">
+      <p class="kicker">MOBILE PAIRING</p>
+      <h1>在手机上使用筛</h1>
+      <p class="lead">这台电脑上的筛已经准备好。点下面的按钮，把手机上的「筛」打开。</p>
+
+      <a class="primary" id="open-app" href="#" aria-disabled="true">在筛 App 中打开</a>
+      <p class="status" id="status">正在读取配对信息…</p>
+
+      <div class="divider"></div>
+
+      <section class="manual" aria-label="手动连接信息">
+        <h2>手动连接</h2>
+        <p class="install-note">如果按钮没有反应，打开筛 App，输入下面的信息。</p>
+        <div class="row"><span>电脑地址</span><code id="server-url">—</code><button type="button" data-copy="url">复制</button></div>
+        <div class="row"><span>访问码</span><code id="access-code">—</code><button type="button" data-copy="code">复制</button></div>
+      </section>
+
+      <section class="install" aria-label="安装安卓应用">
+        <h2>还没安装？</h2>
+        <p>先下载安卓安装包。安装后回到本页，再点上面的按钮。</p>
+        <a class="secondary" href="/app/sift.apk">下载安卓安装包（APK）</a>
+        <p class="fine">安装时 Android 可能提示“未知来源”，需要允许浏览器安装应用。</p>
+      </section>
+
+      <p class="fine">手机只读。B站 / 知乎 的登录和同步仍然在电脑上完成。手机和电脑需要连同一个 Wi-Fi。</p>
+    </main>
+  </div>
+  <script src="/pair.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "sift-feed",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "筛 SIFT — 只看你关注的人。聚合 B站 / 知乎关注更新并过滤。",
+  "scripts": {
+    "start": "node --dns-result-order=ipv4first server/index.js --open",
+    "serve": "node --dns-result-order=ipv4first server/index.js",
+    "test": "node --test",
+    "seed:demo": "node scripts/seed-demo.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

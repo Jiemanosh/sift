@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="河边城市封面">
+  <defs>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9c2bd"/>
+      <stop offset="1" stop-color="#76888a"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="url(#haze)"/>
+  <circle cx="520" cy="108" r="48" fill="#e8dfcc" opacity="0.8"/>
+  <g fill="#4f6163">
+    <rect x="30" y="236" width="64" height="132"/>
+    <rect x="102" y="196" width="42" height="172"/>
+    <rect x="152" y="256" width="78" height="112"/>
+    <rect x="238" y="174" width="54" height="194"/>
+    <rect x="300" y="226" width="38" height="142"/>
+    <rect x="390" y="210" width="82" height="158"/>
+    <rect x="482" y="250" width="46" height="118"/>
+    <rect x="536" y="188" width="58" height="180"/>
+    <rect x="602" y="232" width="56" height="136"/>
+  </g>
+  <g fill="#e8dfcc" opacity="0.7">
+    <rect x="40" y="250" width="8" height="10"/><rect x="56" y="250" width="8" height="10"/><rect x="72" y="250" width="8" height="10"/>
+    <rect x="40" y="274" width="8" height="10"/><rect x="56" y="274" width="8" height="10"/><rect x="72" y="274" width="8" height="10"/>
+    <rect x="112" y="214" width="7" height="9"/><rect x="126" y="214" width="7" height="9"/><rect x="112" y="234" width="7" height="9"/>
+    <rect x="250" y="192" width="8" height="10"/><rect x="270" y="192" width="8" height="10"/><rect x="250" y="216" width="8" height="10"/>
+    <rect x="404" y="230" width="9" height="11"/><rect x="424" y="230" width="9" height="11"/><rect x="444" y="230" width="9" height="11"/>
+    <rect x="550" y="208" width="8" height="10"/><rect x="570" y="208" width="8" height="10"/><rect x="550" y="230" width="8" height="10"/>
+  </g>
+  <rect x="0" y="330" width="688" height="102" fill="#39484a"/>
+  <g stroke="#e8dfcc" stroke-width="1.2" opacity="0.42" fill="none">
+    <path d="M0 360 C90 348 170 372 260 360 S450 346 688 362"/>
+    <path d="M0 390 C120 376 210 402 330 388 S540 374 688 392"/>
+    <path d="M0 418 C100 408 230 428 360 414 S560 404 688 420"/>
+  </g>
+  <text x="30" y="76" fill="#263234" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="4">RIVERSIDE / FIELD NOTES</text>
+  <text x="30" y="136" fill="#263234" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="58" font-weight="600" letter-spacing="6">河边转身</text>
+  <text x="32" y="168" fill="#39484a" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="17" letter-spacing="3">一段旧堤岸的观察</text>
+  <rect width="688" height="432" filter="url(#grain)"/>
+</svg>

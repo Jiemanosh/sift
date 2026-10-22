@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="光，秋日胶片摄影封面">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eee3ce"/>
+      <stop offset="1" stop-color="#d9c7a8"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.07"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="url(#sky)"/>
+  <circle cx="506" cy="150" r="86" fill="#b23a2b"/>
+  <path d="M0 328 C120 296 190 348 296 324 S522 276 688 318 V432 H0 Z" fill="#2a2620" opacity="0.92"/>
+  <path d="M0 366 C150 332 250 388 372 358 S570 330 688 368" fill="none" stroke="#eee3ce" stroke-width="1.2" opacity="0.6"/>
+  <g fill="none" stroke="#2a2620" stroke-width="1">
+    <rect x="26" y="26" width="636" height="380"/>
+    <path d="M26 80 H662 M26 352 H662"/>
+  </g>
+  <text x="46" y="63" fill="#2a2620" font-family="ui-monospace, 'SFMono-Regular', Menlo, monospace" font-size="12" letter-spacing="3">PORTRA 400 · 36 EXP</text>
+  <text x="46" y="398" fill="#eee3ce" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="96" font-weight="600" letter-spacing="8">光</text>
+  <text x="636" y="398" text-anchor="end" fill="#eee3ce" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="2">AUTUMN / 2026</text>
+  <rect width="688" height="432" filter="url(#grain)"/>
+</svg>

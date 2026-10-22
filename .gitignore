@@ -1,0 +1,12 @@
+node_modules/
+data/
+.tmp/
+*.log
+.DS_Store
+Thumbs.db
+
+# Android build artifacts
+android/build/
+android/sift.apk
+android/sift.apk.idsig
+android/keystore/

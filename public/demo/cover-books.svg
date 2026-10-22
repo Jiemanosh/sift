@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="秋日读书封面">
+  <defs>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.07"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="#d9c3a3"/>
+  <rect x="0" y="304" width="688" height="128" fill="#b5a083"/>
+  <g stroke="#2a2620" stroke-width="1.5" fill="none">
+    <rect x="86" y="238" width="320" height="44" fill="#6b705c"/>
+    <rect x="106" y="196" width="300" height="42" fill="#e8dfcc"/>
+    <rect x="70" y="152" width="346" height="44" fill="#b23a2b"/>
+    <rect x="120" y="110" width="286" height="42" fill="#4f6f7c"/>
+  </g>
+  <g fill="#e8dfcc">
+    <rect x="102" y="252" width="150" height="5" opacity="0.8"/>
+    <rect x="102" y="266" width="96" height="4" opacity="0.55"/>
+  </g>
+  <g fill="#2a2620">
+    <rect x="124" y="211" width="136" height="5" opacity="0.7"/>
+    <rect x="124" y="224" width="82" height="4" opacity="0.5"/>
+    <rect x="88" y="166" width="180" height="6" fill="#e8dfcc" opacity="0.85"/>
+    <rect x="88" y="180" width="112" height="4" fill="#e8dfcc" opacity="0.6"/>
+    <rect x="138" y="124" width="150" height="5" fill="#e8dfcc" opacity="0.85"/>
+    <rect x="138" y="137" width="94" height="4" fill="#e8dfcc" opacity="0.55"/>
+  </g>
+  <circle cx="556" cy="168" r="74" fill="#e8dfcc" opacity="0.8"/>
+  <path d="M556 94 V242 M482 168 H630" stroke="#9c5a3c" stroke-width="1" opacity="0.5"/>
+  <text x="44" y="64" fill="#2a2620" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="4">READING LIST / THREE BOOKS</text>
+  <text x="46" y="394" fill="#2a2620" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="46" font-weight="600" letter-spacing="6">城市与摄影</text>
+  <text x="632" y="394" text-anchor="end" fill="#4f4a41" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="2">VOL. 12</text>
+  <rect width="688" height="432" filter="url(#grain)"/>
+</svg>

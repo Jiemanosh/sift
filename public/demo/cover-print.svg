@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="黑白放印封面">
+  <defs>
+    <filter id="paper">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.09"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="#ece4d2"/>
+  <g fill="none" stroke="#2a2620" stroke-width="1.4">
+    <rect x="196" y="98" width="296" height="236"/>
+    <path d="M196 52 V30 M196 52 H174 M492 52 V30 M492 52 H514 M196 380 V402 M196 380 H174 M492 380 V402 M492 380 H514"/>
+  </g>
+  <rect x="216" y="118" width="256" height="196" fill="#2a2620"/>
+  <g fill="#ece4d2">
+    <circle cx="344" cy="196" r="46"/>
+    <path d="M216 286 C264 258 306 296 350 278 S432 252 472 276 V314 H216 Z"/>
+  </g>
+  <rect x="216" y="118" width="256" height="196" fill="none" stroke="#ece4d2" stroke-width="1" opacity="0.35"/>
+  <rect x="474" y="300" width="54" height="54" fill="#b23a2b"/>
+  <text x="54" y="72" fill="#2a2620" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="4">SILVER GELATIN / TEST PRINT</text>
+  <text x="54" y="392" fill="#2a2620" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="24" letter-spacing="5">灰度比预想中更软</text>
+  <rect width="688" height="432" filter="url(#paper)"/>
+</svg>

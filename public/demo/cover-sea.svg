@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 432" width="688" height="432" role="img" aria-label="海边测光封面">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c8d0c8"/>
+      <stop offset="0.55" stop-color="#7e9694"/>
+      <stop offset="1" stop-color="#3f5b5e"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="688" height="432" fill="url(#water)"/>
+  <circle cx="164" cy="112" r="44" fill="#e8dfcc" opacity="0.85"/>
+  <g fill="none" stroke="#e8dfcc" opacity="0.55">
+    <path d="M0 236 C80 216 160 252 250 232 S430 208 688 240" stroke-width="1.6"/>
+    <path d="M0 266 C110 244 200 280 320 258 S520 238 688 272" stroke-width="1.2"/>
+    <path d="M0 300 C90 282 230 312 350 292 S560 276 688 306" stroke-width="1"/>
+    <path d="M0 338 C120 318 260 348 400 326 S590 310 688 342" stroke-width="0.8"/>
+  </g>
+  <path d="M0 432 V356 C80 340 130 372 210 356 S340 332 420 356 S570 386 688 350 V432 Z" fill="#2f4345"/>
+  <g stroke="#2a2620" stroke-width="1" opacity="0.45">
+    <path d="M36 60 H652 M36 366 H652"/>
+  </g>
+  <text x="48" y="52" fill="#26383a" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="4">OLD LIGHT METER / BY THE SEA</text>
+  <text x="48" y="166" fill="#26383a" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="54" font-weight="600" letter-spacing="8">潮间带</text>
+  <text x="48" y="396" fill="#e8dfcc" font-family="'Songti SC', 'Noto Serif SC', serif" font-size="20" letter-spacing="4">换一枚电池，去海边</text>
+  <text x="636" y="396" text-anchor="end" fill="#c8d0c8" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="2">f/8 · 1/250</text>
+  <rect width="688" height="432" filter="url(#grain)"/>
+</svg>
