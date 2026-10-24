@@ -48,6 +48,19 @@ npm start
 2. **知乎**：在同一台电脑的 Chrome 中打开「账号与来源」→「同步书签」，把按钮拖到书签栏；登录知乎后点击该书签。书签会打开一个本机接收页，把关注列表与动态送进 SIFT。Chrome 155 起禁止公网页面直接访问回环地址，因此采用本地接收页转交。
 3. 点右上角「同步更新」，开始浏览。
 
+### Windows 一键版（EXE）
+
+不想安装 Node，可以直接从 [Releases](https://github.com/Jiemanosh/sift/releases/latest) 下载 `SIFT.exe`，双击运行。单文件约 35 MB，已内置 Node 运行时，支持 Windows 10 / 11 x64。
+
+- **首次启动**会先解压运行文件，并弹出 Windows 防火墙询问。只在电脑上使用可以点「取消」；需要用手机访问同一局域网时点「允许」（勾选专用网络即可）。
+- EXE 未做代码签名，SmartScreen 可能显示「未知发布者」。可选择「更多信息 → 仍要运行」，并用 Release 中的 `SIFT.exe.sha256` 校验文件。
+- 启动后常驻系统托盘：双击图标重新打开页面；右键可打开数据文件夹、查看日志或退出。
+- 数据保存在 `%LOCALAPPDATA%\SIFT\data`，日志在 `%LOCALAPPDATA%\SIFT\logs\sift.log`。升级时直接替换 EXE 即可，数据不受影响。
+- 默认端口 8787；被占用时会自动尝试 8787–8887，实际端口写在 `%LOCALAPPDATA%\SIFT\port.txt`。
+- 退出：右键托盘图标 →「退出」，或运行 `SIFT.exe --stop`。彻底清除请先退出，再删除 `%LOCALAPPDATA%\SIFT`。
+- 想放到其他目录或 U 盘：设置 `SIFT_HOME` 后再启动，例如 `set SIFT_HOME=D:\SIFT`；`SIFT_PORT` 同样生效。
+- 自行构建：`powershell -ExecutionPolicy Bypass -File windows/build.ps1`（需要 Node.js 20+ x64），产物为 `windows/dist/SIFT.exe`。
+
 ### 演示数据
 
 想先看看界面，可以只用虚构数据启动第二个实例：
@@ -168,6 +181,7 @@ docker run --rm -v sift_sift-data:/data -v "$PWD":/backup alpine \
 ## 数据与隐私
 
 - `data/`（或 `SIFT_DATA_DIR`）中的 JSON 包含登录 Cookie、访问码与会话签名密钥。**不要提交、不要分享该目录**；`data/` 已在 `.gitignore` 中。
+- Windows EXE 的默认数据目录是 `%LOCALAPPDATA%\SIFT\data`；删除整个 `%LOCALAPPDATA%\SIFT` 会连同登录态一起清除。
 - 对外的网络请求只发往 B站 / 知乎的 API 与图片域名；图片代理只允许 `bilibili.com`、`hdslb.com`、`zhihu.com`、`zhimg.com`。
 - 没有统计、埋点或第三方脚本。
 - B站收藏夹与稍后再看为只读浏览；不提供收藏、点赞、关注等写操作。
@@ -194,6 +208,7 @@ SMOKE_URL=http://127.0.0.1:8788/ CHROME_PATH="/path/to/chrome" npm run smoke
 ```
 server/   Express API、B站/知乎读取、同步、存储与手机鉴权
 public/   原生 HTML/CSS/JS 前端（无构建步骤）
+windows/  Windows 单文件启动器（C# + 内嵌 Node 运行时）
 android/  可选的 Android WebView 壳
 scripts/  演示数据与 UI 冒烟测试
 test/     node:test 单元测试
@@ -213,7 +228,10 @@ test/     node:test 单元测试
 `SIFT_PORT=8788 npm start` 换一个端口即可。
 
 **手机打不开？**
-确认手机与电脑在同一 Wi-Fi、系统防火墙允许 Node 监听 8787、路由器未开启 AP 隔离；访问地址必须是电脑的局域网 IP，并输入访问码。
+确认手机与电脑在同一 Wi-Fi、系统防火墙允许 Node 或 `SIFT.exe` 监听端口、路由器未开启 AP 隔离；访问地址必须是电脑的局域网 IP，并输入访问码。使用 EXE 时，首次启动要允许防火墙的「专用网络」访问。
+
+**EXE 双击后没反应？**
+先看托盘区是否有 SIFT 图标（可能被折叠），再查看 `%LOCALAPPDATA%\SIFT\logs\sift.log` 和 `port.txt`。如果浏览器没自动打开，手动访问日志里显示的地址即可。
 
 **能部署成公开网站给朋友用吗？**
 不建议。SIFT 的权限模型以「本机 = 所有者」为前提，没有多用户账号体系。请每位使用者各自部署一份。

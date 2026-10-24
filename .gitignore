@@ -11,3 +11,7 @@ android/build/
 android/sift.apk
 android/sift.apk.idsig
 android/keystore/
+
+# Windows launcher build output
+windows/build/
+windows/dist/
