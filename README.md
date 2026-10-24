@@ -4,7 +4,10 @@
 
 把 B站 与知乎的关注更新收进一张纸：按时间范围、平台、类型、博主和关键词筛选，没有推荐算法，也没有广告位。所有数据只留在你自己的机器上。
 
+**Windows 用户**：不想安装 Node，可直接下载 [SIFT.exe](https://github.com/Jiemanosh/sift/releases/latest) 双击运行，详见下方「Windows 一键版」。
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-1d1b17.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Jiemanosh/sift?color=1d1b17)](https://github.com/Jiemanosh/sift/releases/latest)
 
 ![桌面界面](docs/screenshot-desktop.png)
 
