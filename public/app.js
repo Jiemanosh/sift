@@ -14,6 +14,7 @@ const PAGE_SIZE = 60;
 const TZ = 'Asia/Shanghai';
 const STATUS_INTERVAL = 15000;
 const DEFAULT_RANGE_DAYS = 30;
+const TO_TOP_OFFSET = 600;
 const SAVED_VIEWS = new Set(['favorites', 'watchlater']);
 
 function createSavedState(owner = null) {
@@ -65,6 +66,8 @@ const state = {
     days: DEFAULT_RANGE_DAYS,
   },
   visibleCount: PAGE_SIZE,
+  allCreatorsMemory: null,
+  pendingAllCreatorsScroll: null,
   loading: true,
   loadError: '',
   loadedOnce: false,
@@ -97,6 +100,10 @@ function setRailOpen(open) {
   if (!dom.rail || !dom.filterToggle) return;
   dom.rail.classList.toggle('is-open', open);
   dom.filterToggle.setAttribute('aria-expanded', String(open));
+  if (open || !state.pendingAllCreatorsScroll) return;
+  const pending = state.pendingAllCreatorsScroll;
+  state.pendingAllCreatorsScroll = null;
+  if (pending.signature === filterSignature()) scrollToFeedPosition(pending.target);
 }
 
 function activeFilterCount() {
@@ -401,6 +408,7 @@ function cacheDom() {
   dom.modalKicker = $('modal-kicker');
   dom.modalTitle = $('modal-title');
   dom.modalBody = $('modal-body');
+  dom.toTop = $('to-top');
   dom.toast = $('toast');
 }
 
@@ -413,7 +421,7 @@ function bindEvents() {
   });
   dom.railDone.addEventListener('click', () => {
     setRailOpen(false);
-    dom.filterToggle.focus();
+    dom.filterToggle.focus({ preventScroll: true });
   });
 
   dom.viewSwitch.addEventListener('click', (event) => {
@@ -437,6 +445,7 @@ function bindEvents() {
     if (!button) return;
     const value = button.dataset.value;
     const next = state.filters.source === value && value !== 'all' ? 'all' : value;
+    const wasAllCreators = state.filters.creator === 'all';
     state.filters.source = next;
     if (next === 'all') {
       state.filters.creator = 'all';
@@ -448,10 +457,16 @@ function bindEvents() {
         state.filters.creator = 'all';
       }
     }
-    state.visibleCount = PAGE_SIZE;
+    let restore = null;
+    if (!wasAllCreators && state.filters.creator === 'all') {
+      restore = beginAllCreatorsReturn();
+    } else {
+      state.visibleCount = PAGE_SIZE;
+    }
     renderFilterUI();
     renderCreators();
     renderFeedArea();
+    applyAllCreatorsScroll(restore);
   });
 
   dom.kindChips.addEventListener('click', (event) => {
@@ -548,6 +563,9 @@ function bindEvents() {
   });
 
   document.addEventListener('keydown', handleKeydown);
+  dom.toTop.addEventListener('click', scrollToTop);
+  window.addEventListener('scroll', updateToTopVisibility, { passive: true });
+  window.addEventListener('resize', updateToTopVisibility);
   window.addEventListener('focus', maybeRefresh);
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) maybeRefresh();
@@ -897,6 +915,63 @@ function renderMarkAllState() {
   if (!state.markAllArmed) dom.markAllBtn.textContent = '全部标为已读';
 }
 
+function filterSignature() {
+  const { source, kind, unread, starred, query, days } = state.filters;
+  return [source, kind, unread, starred, query, days].join('|');
+}
+
+function isRailExpanded() {
+  return window.matchMedia('(max-width: 900px)').matches
+    && Boolean(dom.rail?.classList.contains('is-open'));
+}
+
+function rememberAllCreatorsPosition() {
+  if (state.view !== 'following' || state.filters.creator !== 'all') return;
+  if (isRailExpanded()) return;
+  state.allCreatorsMemory = {
+    signature: filterSignature(),
+    scrollY: window.scrollY,
+    visibleCount: Math.max(PAGE_SIZE, state.visibleCount),
+  };
+}
+
+function beginAllCreatorsReturn() {
+  const memory = state.allCreatorsMemory;
+  if (!memory || memory.signature !== filterSignature()) {
+    state.visibleCount = PAGE_SIZE;
+    return null;
+  }
+  state.visibleCount = Math.max(PAGE_SIZE, memory.visibleCount);
+  return memory.scrollY;
+}
+
+function scrollToFeedPosition(target) {
+  const root = document.documentElement;
+  const previous = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, target);
+  root.style.scrollBehavior = previous;
+}
+
+function applyAllCreatorsScroll(target) {
+  if (target === null) return;
+  if (isRailExpanded()) {
+    state.pendingAllCreatorsScroll = { target, signature: filterSignature() };
+    return;
+  }
+  scrollToFeedPosition(target);
+}
+
+function updateToTopVisibility() {
+  dom.toTop.classList.toggle('is-visible', window.scrollY > TO_TOP_OFFSET);
+}
+
+function scrollToTop() {
+  state.pendingAllCreatorsScroll = null;
+  window.scrollTo({ top: 0 });
+  updateToTopVisibility();
+}
+
 function renderCreators() {
   const list = state.creators.filter(
     (creator) => state.filters.source === 'all' || creator.platform === state.filters.source,
@@ -919,11 +994,13 @@ function renderCreators() {
   const total = list.reduce((sum, creator) => sum + (Number(creator.count) || 0), 0);
   allButton.append(h('span', 'creator-count', String(total)));
   allButton.addEventListener('click', () => {
+    if (state.filters.creator === 'all') return;
     state.filters.creator = 'all';
-    state.visibleCount = PAGE_SIZE;
+    const restore = beginAllCreatorsReturn();
     renderFilterUI();
     renderCreators();
     renderFeedArea();
+    applyAllCreatorsScroll(restore);
   });
   dom.creatorChips.append(allButton);
 
@@ -943,11 +1020,16 @@ function renderCreators() {
     );
     button.append(count);
     button.addEventListener('click', () => {
-      state.filters.creator = active ? 'all' : id;
-      state.visibleCount = PAGE_SIZE;
+      const next = active ? 'all' : id;
+      if (state.filters.creator === next) return;
+      if (state.filters.creator === 'all') rememberAllCreatorsPosition();
+      state.filters.creator = next;
+      const restore = next === 'all' ? beginAllCreatorsReturn() : null;
+      if (next !== 'all') state.visibleCount = PAGE_SIZE;
       renderFilterUI();
       renderCreators();
       renderFeedArea();
+      applyAllCreatorsScroll(restore);
     });
     dom.creatorChips.append(button);
   }
@@ -1464,6 +1546,7 @@ function buildCard(item, { saved = false } = {}) {
       creator.append(h('span', 'creator-label', item.author.name));
       creator.addEventListener('click', () => {
         if (!item.author?.id) return;
+        if (state.filters.creator === 'all') rememberAllCreatorsPosition();
         state.filters.creator = `${item.platform}:${item.author.id}`;
         state.visibleCount = PAGE_SIZE;
         renderFilterUI();
@@ -2706,6 +2789,7 @@ function buildBridgeView(data, { cookieOpen }) {
 function init() {
   cacheDom();
   bindEvents();
+  updateToTopVisibility();
   renderHeader();
   renderAccounts();
   renderFilterUI();

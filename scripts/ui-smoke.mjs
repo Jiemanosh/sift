@@ -295,6 +295,25 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('.card').length === 22);
   assert.equal(await page.locator('.creator-all').getAttribute('aria-pressed'), 'true');
 
+  const restoreY = 620;
+  await page.evaluate((top) => window.scrollTo(0, top), restoreY);
+  await page.waitForFunction((top) => Math.abs(window.scrollY - top) <= 1, restoreY);
+  await page.locator('#creator-chips .creator-chip:not(.creator-all)').first().click();
+  await page.waitForFunction(() => document.querySelectorAll('.card').length === 4);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForFunction(() => window.scrollY === 0);
+  await page.locator('.creator-all').click();
+  await page.waitForFunction(() => document.querySelectorAll('.card').length === 22);
+  await page.waitForFunction((top) => Math.abs(window.scrollY - top) <= 2, restoreY);
+  results.push({ view: 'creator scroll restore', scrollY: await page.evaluate(() => window.scrollY) });
+
+  await page.waitForSelector('#to-top.is-visible');
+  await page.screenshot({ path: shot('sift-to-top.png') });
+  await page.locator('#to-top').click();
+  await page.waitForFunction(() => window.scrollY === 0);
+  await page.waitForSelector('#to-top.is-visible', { state: 'detached' });
+  results.push({ view: 'back to top', offset: 600 });
+
   await openAccounts(page);
   assert.match(await page.locator('[role="dialog"]').innerText(), /林间胶片/);
   assert.match(await page.locator('[role="dialog"]').innerText(), /暗房笔记/);
@@ -399,8 +418,39 @@ try {
   assert.ok(mobileBadges.every((text) => text === '知乎'));
   await mobile.locator('#source-chips .chip[data-value="zhihu"]').click();
   await mobile.waitForFunction(() => document.querySelectorAll('.card').length === 22);
+
   await mobile.locator('#rail-done').click();
   await mobile.waitForSelector('#rail.is-open', { state: 'detached' });
+  await mobile.evaluate(() => window.scrollTo(0, 500));
+  await mobile.waitForFunction(() => Math.abs(window.scrollY - 500) <= 1);
+  const mobileCreatorLink = mobile.locator('.card .creator-link').nth(1);
+  await mobileCreatorLink.scrollIntoViewIfNeeded();
+  const mobileRestoreY = await mobile.evaluate(() => Math.round(window.scrollY));
+  assert.ok(mobileRestoreY > 0, '手机端应停在信息流内');
+  await mobileCreatorLink.click();
+  await mobile.waitForFunction(() => document.querySelectorAll('.card').length === 3);
+  await mobile.evaluate(() => window.scrollTo(0, 0));
+  await mobile.waitForFunction(() => window.scrollY === 0);
+  await mobile.locator('#filter-toggle').click();
+  await mobile.waitForSelector('#rail.is-open');
+  await mobile.locator('.creator-all').click();
+  await mobile.waitForFunction(() => document.querySelectorAll('.card').length === 22);
+  await mobile.locator('#rail-done').click();
+  await mobile.waitForSelector('#rail.is-open', { state: 'detached' });
+  assert.ok(
+    Math.abs((await mobile.evaluate(() => window.scrollY)) - mobileRestoreY) <= 2,
+    '手机端返回全部博主应恢复滚动位置',
+  );
+
+  await mobile.evaluate(() => window.scrollTo(0, 900));
+  await mobile.waitForFunction(() => Math.abs(window.scrollY - 900) <= 1);
+  await mobile.waitForSelector('#to-top.is-visible');
+  const toTopBox = await mobile.locator('#to-top').boundingBox();
+  assert.ok(toTopBox && toTopBox.width >= 44 && toTopBox.height >= 44, '手机端回到顶部按钮应可点按');
+  await mobile.screenshot({ path: shot('sift-mobile-to-top.png') });
+  await mobile.locator('#to-top').click();
+  await mobile.waitForFunction(() => window.scrollY === 0);
+  await mobile.waitForSelector('#to-top.is-visible', { state: 'detached' });
 
   results.push({
     view: '390x844',
