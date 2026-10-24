@@ -1,0 +1,13 @@
+.git
+.github
+node_modules
+data
+.tmp
+docs
+test
+scripts
+android
+*.log
+.env
+.env.*
+!.env.example

@@ -1,0 +1,24 @@
+services:
+  sift:
+    build: .
+    image: sift:local
+    container_name: sift
+    restart: unless-stopped
+    # Linux / NAS 推荐 host 网络：宿主机浏览器通过 127.0.0.1 访问时保留完整权限
+    # （登录、同步、查看配对码）。Docker Desktop 的 host 网络支持因版本而异，
+    # 若不可用，请改用原生 Node 安装，原因见 README「Docker」一节。
+    network_mode: host
+    environment:
+      SIFT_PORT: ${SIFT_PORT:-8787}
+      SIFT_HOST: 0.0.0.0
+      SIFT_DATA_DIR: /data
+      SIFT_SYNC_MS: ${SIFT_SYNC_MS:-1200000}
+      SIFT_ALLOWED_HOSTS: ${SIFT_ALLOWED_HOSTS:-}
+      SIFT_BILI_DAYS: ${SIFT_BILI_DAYS:-180}
+      SIFT_ZHIHU_DAYS: ${SIFT_ZHIHU_DAYS:-180}
+      SIFT_MAX_ITEMS: ${SIFT_MAX_ITEMS:-1500}
+    volumes:
+      - sift-data:/data
+
+volumes:
+  sift-data:

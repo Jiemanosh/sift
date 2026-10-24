@@ -3,11 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "筛 SIFT — 只看你关注的人。聚合 B站 / 知乎关注更新并过滤。",
+  "description": "筛 SIFT — 只看你关注的 B站 / 知乎博主更新。本地优先的信息流筛选器。",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jiemanosh/sift.git"
+  },
+  "homepage": "https://github.com/Jiemanosh/sift#readme",
+  "bugs": {
+    "url": "https://github.com/Jiemanosh/sift/issues"
+  },
+  "keywords": [
+    "bilibili",
+    "zhihu",
+    "feed-filter",
+    "self-hosted",
+    "privacy",
+    "local-first"
+  ],
   "scripts": {
     "start": "node --dns-result-order=ipv4first server/index.js --open",
     "serve": "node --dns-result-order=ipv4first server/index.js",
     "test": "node --test",
+    "smoke": "node scripts/ui-smoke.mjs",
     "seed:demo": "node scripts/seed-demo.js"
   },
   "dependencies": {

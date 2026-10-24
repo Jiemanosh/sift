@@ -2,7 +2,11 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-D:/Android/Sdk}}"
+SDK="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+if [ -z "$SDK" ]; then
+  echo "请先设置 ANDROID_SDK_ROOT（或 ANDROID_HOME）指向 Android SDK。" >&2
+  exit 1
+fi
 if command -v cygpath >/dev/null 2>&1; then
   SDK="$(cygpath -u "$SDK")"
 fi
