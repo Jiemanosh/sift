@@ -72,7 +72,17 @@ try {
   await page.screenshot({ path: shot('sift-desktop.png') });
   results.push({ view: 'desktop', cards: 22, screenshot: 'sift-desktop.png' });
 
-  assert.equal(await page.locator('#range-chips button').count(), 5, '应提供五种更新范围');
+  assert.equal(await page.locator('#range-chips button').count(), 6, '应提供六种更新范围');
+  await page.locator('#range-chips button[data-days="1"]').click();
+  await page.waitForFunction(() => document.querySelectorAll('.card').length === 4);
+  assert.match(await page.locator('#result-note').textContent(), /4 条更新/);
+  assert.equal(
+    await page.locator('#range-chips button[data-days="1"]').getAttribute('aria-pressed'),
+    'true',
+    '一天内选项应处于选中状态',
+  );
+  assert.equal(await page.locator('#filter-count').textContent(), '1', '非默认范围应计入筛选角标');
+  await page.screenshot({ path: shot('sift-range-1.png') });
   await page.locator('#range-chips button[data-days="7"]').click();
   await page.waitForFunction(() => document.querySelectorAll('.card').length === 14);
   assert.match(await page.locator('#result-note').textContent(), /14 条更新/);
@@ -87,7 +97,7 @@ try {
   await page.locator('#range-chips button[data-days="30"]').click();
   await page.waitForFunction(() => document.querySelectorAll('.card').length === 22);
   assert.equal(await page.locator('#filter-count').isVisible(), false, '默认范围不应计入筛选角标');
-  results.push({ view: 'date range', days: [7, 15, 90, 180, 30], counts: [14, 19, 22, 22, 22] });
+  results.push({ view: 'date range', days: [1, 7, 15, 90, 180, 30], counts: [4, 14, 19, 22, 22, 22] });
 
   // ---- Saved library views (mocked B站 endpoints) ----
   const savedAt = Date.now() - 2 * 3600 * 1000;
@@ -402,10 +412,13 @@ try {
   assert.equal(await mobile.locator('#range-picker').isVisible(), true, '手机筛选抽屉应显示更新范围');
   assert.deepEqual(
     await mobile.locator('#range-chips button').allTextContents(),
-    ['近一周', '近十五天', '近一月', '近三月', '近半年'],
+    ['一天内', '近一周', '近十五天', '近一月', '近三月', '近半年'],
   );
   await mobile.screenshot({ path: shot('sift-mobile-filters.png') });
 
+  await mobile.locator('#range-chips button[data-days="1"]').click();
+  await mobile.waitForFunction(() => document.querySelectorAll('.card').length === 4);
+  assert.equal(await mobile.locator('#filter-count').textContent(), '1');
   await mobile.locator('#range-chips button[data-days="7"]').click();
   await mobile.waitForFunction(() => document.querySelectorAll('.card').length === 14);
   assert.equal(await mobile.locator('#filter-count').textContent(), '1');
