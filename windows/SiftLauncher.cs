@@ -15,8 +15,8 @@ using System.Windows.Forms;
 [assembly: AssemblyProduct("SIFT")]
 [assembly: AssemblyCompany("Jiemanosh")]
 [assembly: AssemblyCopyright("MIT License © 2026 Jiemanosh")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 
 namespace SiftLauncher
 {

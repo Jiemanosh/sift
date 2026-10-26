@@ -1,6 +1,6 @@
 {
   "name": "sift-feed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "筛 SIFT — 只看你关注的 B站 / 知乎博主更新。本地优先的信息流筛选器。",

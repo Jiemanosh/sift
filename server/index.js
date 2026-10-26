@@ -42,7 +42,7 @@ import {
   verifyMobileToken,
 } from './mobile.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const ZHIHU_ORIGINS = new Set(['https://www.zhihu.com', 'https://zhuanlan.zhihu.com']);
 const qrSessions = new Map();
 
